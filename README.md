@@ -1,4 +1,4 @@
-# Minesweeper
+# Minesweeper 
 
 For our C++ final project, we aim to develop a Minesweeper game, potentially incorporating a graphical user interface (GUI) if time allows. This project will use key libraries and features of C++. The Standard Template Library (STL) will be employed for efficient handling of vectors, sets, and maps, while the <random> library will assist in generating random mine placements. Input and output operations will be facilitated through the <iostream> library, and <cstdint> will be used to specify the size of integers. Templates will play a crucial role in various aspects, including grid representation, game settings, custom data types, and utility functions such as shuffling the grid for the next round, validating user input, and checking for mines in a given cell.
 
