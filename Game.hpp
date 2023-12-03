@@ -5,7 +5,7 @@
 #include "Board.hpp"
 
 class Game {
-    Board board;
+    std::unique_ptr<Board> board;
     bool gameOver;
 
 public:

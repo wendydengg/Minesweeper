@@ -2,7 +2,13 @@
 #include "Board.hpp"
 #include <iostream>
 
-Board::Board(int w, int h) : width(w), height(h), grid(w, std::vector<Cell>(h)) {}
+Board::Board(int w, int h) : width(w), height(h), grid(w, std::vector<std::unique_ptr<Cell>>(h)) {
+    for (int x = 0; x < w; ++x) {
+        for (int y = 0; y < h; ++y) {
+            grid[x][y] = std::make_unique<Cell>();
+        }
+    }
+}
 
 void Board::placeMines(int mineCount) {
     // Randomly place mines

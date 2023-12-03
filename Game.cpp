@@ -2,15 +2,17 @@
 #include "Game.hpp"
 #include <iostream>
 
-Game::Game(int width, int height, int mineCount) : board(width, height), gameOver(false) {
-    board.placeMines(mineCount);
+Game::Game(int width, int height, int mineCount) : gameOver(false) {
+    board = std::make_unique<Board>(width, height);
+    board->placeMines(mineCount);
 }
+
 
 void Game::run() {
     while (!gameOver) {
-        board.displayBoard();
+        board->displayBoard();
         // Handle user input and game logic
 
-        gameOver = board.isGameWon();  
+        gameOver = board->isGameWon();  
     }
 }
