@@ -16,6 +16,8 @@ public:
     void placeMines(int mineCount);
     void revealCell(int x, int y);
     void toggleFlag(int x, int y);
+    void displayBoard() const;
+    bool isGameWon() const;
 };
 
 #endif 
