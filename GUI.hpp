@@ -1,3 +1,12 @@
+// GUI.hpp
+#pragma once // only include gui once
+#include "SFML/Graphics.hpp"
+#include "Board.hpp"
+
+class GUI {
+    
+}
+
 //restart button
 //timer: recording time to finish the game
 //hint button, can only click 3 times
