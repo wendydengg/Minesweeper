@@ -39,7 +39,6 @@ void Board::revealCell(int x, int y) {
 
     if (grid[x][y]->isMine) {
         // Handle mine hit, end the game
-        // You may want to set the game status to lost in your Game class
     } else {
         // Check and reveal adjacent cells if the current cell is blank
         if (grid[x][y]->adjacentMines == 0) {
