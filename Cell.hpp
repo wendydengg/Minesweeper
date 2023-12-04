@@ -3,6 +3,7 @@
 #define CELL_HPP
 
 class Cell {
+// add template for how it's generated
 public:
     enum class State {
         Unopened,

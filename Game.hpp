@@ -9,7 +9,7 @@ class Game {
     bool gameOver;
 
 public:
-    Game(int width, int height, int mineCount);
+    Game(std::string difficulty);
     void run();
 };
 

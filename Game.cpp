@@ -2,9 +2,9 @@
 #include "Game.hpp"
 #include <iostream>
 
-Game::Game(int width, int height, int mineCount) : gameOver(false) {
-    board = std::make_unique<Board>(width, height);
-    board->placeMines(mineCount);
+Game::Game(std::string difficulty) : gameOver(false) {
+    board = std::make_unique<Board>(difficulty);
+    board->placeMines();
 }
 
 
