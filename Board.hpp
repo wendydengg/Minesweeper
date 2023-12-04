@@ -4,22 +4,29 @@
 
 #include "Cell.hpp"
 #include <vector>
-#include <random>
+#include <memory>
 
 class Board {
-    std::vector<std::vector<std::unique_ptr<Cell>>> grid;
-    int width, height;
-
 public:
-    Board(int width, int height);
-    void placeMines(int mineCount);
+    Board(int w, int h, int mineCount);
+    void placeMines();
     void revealCell(int x, int y);
     void toggleFlag(int x, int y);
     void displayBoard() const;
     bool isGameWon() const;
+
+private:
+    int width;
+    int height;
+    int totalMines;
+    int remainingUnopenedCells;
+    std::vector<std::vector<std::unique_ptr<Cell>>> grid;
+
+    bool isValidCell(int x, int y) const;
 };
 
-#endif 
+#endif
+
 
 //2d array 
 //each cell is a Cell class
