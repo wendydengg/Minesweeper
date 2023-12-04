@@ -9,3 +9,4 @@ If time permits, we intend to integrate the Simple and Fast Multimedia Library (
 The game will feature three difficulty levels: Beginner (9x9 board with 10 mines), Intermediate (16x16 board with 40 mines), and Advanced (24x24 board with 99 mines). In terms of the project timeline, we anticipate a total duration of three weeks, allocating two weeks for the development of game logic and dedicating the final week to GUI implementation if time permits. To ensure a balanced workload, we plan to split all work evenly.
 
 Game rules can be found on [Wikipedia](https://en.wikipedia.org/wiki/Minesweeper_(video_game)#:~:text=To%20win%20a%20game%20of,starting%20with%20a%20larger%20grid.).
+ 
