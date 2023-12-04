@@ -2,7 +2,7 @@
 #include "Board.hpp"
 #include <iostream>
 
-Board::Board(int w, int h, int mineCount) : width(w), height(h), totalMines(mineCount),
+Board::Board(int w, int h, int mineCount, int num, const std::string& level) : width(w), height(h), level(level),
                                             remainingUnopenedCells(w * h), grid(w, std::vector<std::unique_ptr<Cell>>(h)) {
     // change input to difficluty 
     for (int x = 0; x < w; ++x) {
@@ -16,7 +16,17 @@ void Board::placeMines() {
     // Seed for randomization
     std::srand(std::time(0));
 
-    int minesToPlace = totalMines;
+    int minesToPlace = 0;
+
+    if (level == "beginner") {
+        minesToPlace = 10;
+    }
+    else if (level == "intermediate") {
+        minesToPlace = 40;
+    }
+    else if (level == "advanced") {
+        minesToPlace = 99;
+    }
 
     while (minesToPlace > 0) {
         int x = std::rand() % width;

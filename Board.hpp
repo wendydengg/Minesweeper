@@ -8,7 +8,7 @@
 
 class Board {
 public:
-    Board(int w, int h, int mineCount);
+    Board(int w, int h, int mineCount, int num, const std::string& level);
     void placeMines();
     void revealCell(int x, int y);
     void toggleFlag(int x, int y);
@@ -18,7 +18,7 @@ public:
 private:
     int width;
     int height;
-    int totalMines;
+    const std::string& level;
     int remainingUnopenedCells;
     std::vector<std::vector<std::unique_ptr<Cell>>> grid;
 
