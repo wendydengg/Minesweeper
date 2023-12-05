@@ -1,60 +1,58 @@
-// Board.cpp
 #include "Board.hpp"
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
-Board::Board(int w, int h, int mineCount, int num, const std::string& level) : width(w), height(h), level(level),
-                                            remainingUnopenedCells(w * h), grid(w, std::vector<std::unique_ptr<Cell>>(h)) {
-    // change input to difficluty 
+template<typename T>
+Board<T>::Board(int w, int h, int mC) : width(w), height(h), mineCount(mC), 
+    remainingUnopenedCells(w * h), grid(w, std::vector<std::unique_ptr<T>>(h)) {
     for (int x = 0; x < w; ++x) {
         for (int y = 0; y < h; ++y) {
-            grid[x][y] = std::make_unique<Cell>();
+            grid[x][y] = std::make_unique<T>();
         }
     }
 }
 
-void Board::placeMines() {
-    // Seed for randomization
-    std::srand(std::time(0));
+template<typename T>
+void Board<T>::placeMines() {
+    std::srand(static_cast<unsigned int>(std::time(0)));
 
-    int minesToPlace = 0;
-
-    if (level == "beginner") {
-        minesToPlace = 10;
-    }
-    else if (level == "intermediate") {
-        minesToPlace = 40;
-    }
-    else if (level == "advanced") {
-        minesToPlace = 99;
-    }
-
+    int minesToPlace = mineCount;
     while (minesToPlace > 0) {
         int x = std::rand() % width;
         int y = std::rand() % height;
 
-        if (!grid[x][y]->isMine) {
-            grid[x][y]->isMine = true;
+        if (!grid[x][y]->isMine()) {
+            grid[x][y]->setMine(true);
             --minesToPlace;
+
+            // Increment adjacent mines count for surrounding cells
+            for (int dx = -1; dx <= 1; ++dx) {
+                for (int dy = -1; dy <= 1; ++dy) {
+                    if (isValidCell(x + dx, y + dy)) {
+                        grid[x + dx][y + dy]->incrementAdjacentMines();
+                    }
+                }
+            }
         }
     }
 }
 
-
-void Board::revealCell(int x, int y) {
-    if (!isValidCell(x, y) || grid[x][y]->state != Cell::State::Unopened) {
-        return;  // Ignore invalid or already opened cells
+template<typename T>
+void Board<T>::revealCell(int x, int y) {
+    if (!isValidCell(x, y) || grid[x][y]->state() != T::State::Unopened) {
+        return;
     }
 
     grid[x][y]->open();
     --remainingUnopenedCells;
 
-    if (grid[x][y]->isMine) {
-        // Handle mine hit, end the game
-    } else {
-        // Check and reveal adjacent cells if the current cell is blank
-        if (grid[x][y]->adjacentMines == 0) {
-            for (int dx = -1; dx <= 1; ++dx) {
-                for (int dy = -1; dy <= 1; ++dy) {
+    if (grid[x][y]->isMine()) {
+        gameOver = true;
+    } else if (grid[x][y]->adjacentMines() == 0) {
+        for (int dx = -1; dx <= 1; ++dx) {
+            for (int dy = -1; dy <= 1; ++dy) {
+                if (dx != 0 || dy != 0) {
                     revealCell(x + dx, y + dy);
                 }
             }
@@ -62,41 +60,58 @@ void Board::revealCell(int x, int y) {
     }
 }
 
-
-void Board::toggleFlag(int x, int y) {
-    if (isValidCell(x, y) && grid[x][y]->state == Cell::State::Unopened) {
+template<typename T>
+void Board<T>::toggleFlag(int x, int y) {
+    if (isValidCell(x, y) && grid[x][y]->state() == T::State::Unopened) {
         grid[x][y]->toggleFlag();
     }
 }
 
-void Board::displayBoard() const {
-    // Display the board on the console
+template<typename T>
+void Board<T>::displayBoard() const {
     for (int y = 0; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
-            switch (grid[x][y]->state) {
-                case Cell::State::Unopened:
-                    std::cout << "X ";
+            switch (grid[x][y]->state()) {
+                case T::State::Unopened:
+                    std::cout << ".";
                     break;
-                case Cell::State::Opened:
-                    std::cout << (grid[x][y]->isMine ? "*" : std::to_string(grid[x][y]->adjacentMines)) << " ";
+                case T::State::Opened:
+                    if (grid[x][y]->isMine()) {
+                        std::cout << "*";
+                    } else {
+                        std::cout << grid[x][y]->adjacentMines();
+                    }
                     break;
-                case Cell::State::Flagged:
-                    std::cout << "F ";
-                    break;
-                case Cell::State::Questioned:
-                    std::cout << "? ";
+                case T::State::Flagged:
+                    std::cout << "F";
                     break;
             }
+            std::cout << " ";
         }
-        std::cout << std::endl;
+        std::cout << "\n";
     }
 }
 
-bool Board::isGameWon() const {
-    // Check if the game is won
-    return remainingUnopenedCells == totalMines;
+template<typename T>
+bool Board<T>::isGameWon() const {
+    return remainingUnopenedCells == mineCount;
 }
 
-bool Board::isValidCell(int x, int y) const {
-    return (x >= 0 && x < width && y >= 0 && y < height);
+template<typename T>
+std::pair<int, int> Board<T>::getHint() {
+    for (int x = 0; x < width; ++x) {
+        for (int y = 0; y < height; ++y) {
+            if (!grid[x][y]->isMine() && grid[x][y]->state() == T::State::Unopened) {
+                return {x, y};
+            }
+        }
+    }
+    return {-1, -1}; 
 }
+
+template<typename T>
+bool Board<T>::isValidCell(int x, int y) const {
+    return x >= 0 && x < width && y >= 0 && y < height;
+}
+
+template class Board<Cell<int>>;

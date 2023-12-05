@@ -1,11 +1,43 @@
 // GUI.hpp
-#pragma once // only include gui once
+#pragma once
 #include "SFML/Graphics.hpp"
 #include "Board.hpp"
+#include <memory>
+#include <chrono>
 
+template <typename T>
 class GUI {
-    
-}
+private:
+    std::unique_ptr<Board<T>> board;
+    sf::RenderWindow window;
+    sf::Font font;
+
+    // Game state and settings
+    bool gameOver;
+    int mineCount;
+    int flagsUsed;
+    int hintsRemaining;
+    std::chrono::time_point<std::chrono::steady_clock> startTime;
+    std::chrono::duration<float> elapsedTime;
+
+    // GUI elements
+    sf::Text timerText;
+    sf::Text mineCountText;
+    sf::Text hintText;
+    sf::RectangleShape restartButton;
+    sf::RectangleShape hintButton;
+    sf::RectangleShape flagButton;
+
+    // Private methods for handling game logic
+    void handleInput();
+    void updateGame();
+    void draw();
+
+public:
+    GUI(int width, int height, int mineCount);
+    void run();
+};
+
 
 //restart button
 //timer: recording time to finish the game

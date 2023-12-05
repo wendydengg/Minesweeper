@@ -2,8 +2,9 @@
 #ifndef CELL_HPP
 #define CELL_HPP
 
+template<typename T>
+// template for how cell is generated
 class Cell {
-// add template for how it's generated
 public:
     enum class State {
         Unopened,
@@ -12,27 +13,13 @@ public:
         Questioned
     };
 
-    bool isMine;
+    T value;
     State state;
-    int adjacentMines;
 
-    Cell() : isMine(false), state(State::Unopened), adjacentMines(0) {}
+    Cell() : value(T()), state(State::Unopened) {}
 
-    void open() {
-        if (state == State::Unopened || state == State::Questioned) {
-            state = State::Opened;
-        }
-    }
-
-    void toggleFlag() {
-        if (state == State::Unopened) {
-            state = State::Flagged;
-        } else if (state == State::Flagged) {
-            state = State::Questioned;
-        } else if (state == State::Questioned) {
-            state = State::Unopened;
-        }
-    }
+    void open();
+    void toggleFlag();
 };
 
 #endif

@@ -6,21 +6,22 @@
 #include <vector>
 #include <memory>
 
+template<typename T>
 class Board {
 public:
-    Board(int w, int h, int mineCount, int num, const std::string& level);
+    Board(int w, int h, int mineCount);
     void placeMines();
     void revealCell(int x, int y);
     void toggleFlag(int x, int y);
     void displayBoard() const;
     bool isGameWon() const;
+    std::pair<int, int> getHint();
 
 private:
     int width;
     int height;
-    const std::string& level;
     int remainingUnopenedCells;
-    std::vector<std::vector<std::unique_ptr<Cell>>> grid;
+    std::vector<std::vector<std::unique_ptr<T>>> grid;
 
     bool isValidCell(int x, int y) const;
 };

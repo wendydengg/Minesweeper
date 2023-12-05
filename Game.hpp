@@ -3,17 +3,21 @@
 #define GAME_HPP
 
 #include "Board.hpp"
+#include <string>
+#include <memory>
 
 class Game {
-    std::unique_ptr<Board> board;
+    std::unique_ptr<Board<Cell<int>>> board; 
     bool gameOver;
+    std::string difficulty;
 
 public:
-    Game(std::string difficulty);
+    Game(const std::string& difficulty);
     void run();
 };
 
-#endif 
+#endif
+
 
 
 //Rules:
