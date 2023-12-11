@@ -1,40 +1,8 @@
-// #pragma once
-
-// class Cell {
-// 	bool Flagged;
-// 	unsigned char x;
-// 	bool Mine;
-// 	bool isOpen;
-
-// 	unsigned char surroundMines;
-// 	unsigned char stateOfTheMouse;
-// 	unsigned char y;
-// public:
-// 	Cell(unsigned char Ix, unsigned char Iy);
-
-// 	bool retIsOpen();
-// 	bool open(std::vector<Cell>& i_cells);
-
-// 	bool retIsFlag();
-// 	bool retIsMine();
-
-// 	void numMinesSurrounding(std::vector<Cell>& i_cells);
-// 	void flag();
-	
-// 	unsigned char retMinesSurrounding();
-// 	unsigned char mouseState();
-
-// 	void reset();
-// 	void mineSet();
-
-// 	void MouseStateSet(unsigned char toSet);
-// };
-
 #ifndef CELL_HPP
 #define CELL_HPP
 
 #include <vector>
-#include <cstddef> // For size_t
+#include <cstddef> 
 
 template<typename T>
 class Cell {
@@ -57,6 +25,6 @@ private:
     T x, y;
 };
 
-#include "Cell.tpp" // Include implementation file
+#include "Cell.tpp" 
 
-#endif // CELL_HPP
+#endif 
