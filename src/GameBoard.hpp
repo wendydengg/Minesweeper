@@ -5,7 +5,7 @@ class GameBoard {
 	char over;
 	std::default_random_engine rando;
 	std::random_device random_device;
-	std::vector<Cell> cells;
+	std::vector<Cell<unsigned char>> cells;
 public:
 	GameBoard();
 	char retOver();
@@ -19,3 +19,4 @@ public:
 
 	void fieldMouseState(unsigned char i_mouse_state, unsigned char i_x, unsigned char i_y);
 };
+
