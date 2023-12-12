@@ -5,7 +5,7 @@ class GameBoard {
 	char over;
 	std::default_random_engine rando;
 	std::random_device random_device;
-	std::vector<Cell<int>> cells;
+    std::vector<std::unique_ptr<Cell<int>>> cells;
 public:
 	GameBoard();
 	char retOver();

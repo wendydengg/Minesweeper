@@ -49,7 +49,7 @@ GameBoard::GameBoard() :
 	rando(std::chrono::system_clock::now().time_since_epoch().count()) {
 	for (unsigned char a = 0; a < 8; a++) {
 		for (unsigned char b = 0; b < 8; b++) {
-			cells.push_back(Cell<int>(b, a));
+			cells.push_back(std::unique_ptr<Cell<int>>(new Cell<int>(b, a)));
 		}
 	}
 
@@ -60,8 +60,8 @@ unsigned short GameBoard::numFlags() {
 	//number of flagged cells
 	unsigned short flagNum = 0;
 
-	for (Cell<int>& cell : cells) {
-		flagNum = flagNum + cell.retIsFlag();
+	for (const auto& cellPtr : cells) {
+        flagNum += cellPtr->retIsFlag();
 	}     
 	return flagNum;
 }
@@ -93,9 +93,9 @@ void GameBoard::openCell(unsigned char ix, unsigned char iy) {
 		}
 
 		//after mine generation, minecount for each cell
-		for (Cell<int>& cell : cells) {
-			cell.numMinesSurrounding(cells);
-		}
+		for (auto& cellPtr : cells) {
+        cellPtr->numMinesSurrounding(cells);
+    	}
 	}
 
 	//game over of flagged cell
@@ -107,14 +107,13 @@ void GameBoard::openCell(unsigned char ix, unsigned char iy) {
 			unsigned short closedCellCount = 0;
 
 			//how many cells closed?
-			for (Cell<int>& cell : cells) {
-				closedCellCount = closedCellCount + 1 - cell.retIsOpen();
+			for (auto& cellPtr : cells) {
+                closedCellCount += !cellPtr->retIsOpen();
 			}
 
 			//closed cells equals mine num
 			if (closedCellCount == 14) {
 				over = 1;
-
 			}
 		}
 	}
@@ -215,8 +214,8 @@ void GameBoard::restart() {
 	if (0 != over) {
 		click = 0;
 		over = 0;
-		for (Cell<int>& cell : cells) {
-			cell.reset();
+		for (auto& cellPtr : cells) {
+            cellPtr->reset();
 		}
 	}
 }

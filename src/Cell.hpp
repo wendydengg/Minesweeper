@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
 template<typename T>
 class Cell {
@@ -16,12 +17,12 @@ public:
 	Cell(T Ix, T Iy);
 
 	bool retIsOpen();
-	bool open(std::vector<Cell>& i_cells);
+    bool open(std::vector<std::unique_ptr<Cell>>& i_cells);
 
 	bool retIsFlag();
 	bool retIsMine();
 
-	void numMinesSurrounding(std::vector<Cell>& i_cells);
+    void numMinesSurrounding(std::vector<std::unique_ptr<Cell>>& i_cells);
 	void flag();
 	
 	T retMinesSurrounding();
@@ -54,7 +55,7 @@ bool Cell<T>::retIsMine() {
 }
 
 template<typename T>
-bool Cell<T>::open(std::vector<Cell<T>>& i_cells) {
+bool Cell<T>::open(std::vector<std::unique_ptr<Cell>>& i_cells) {
     if (0 == isOpen) {
         isOpen = 1;
 
@@ -86,7 +87,7 @@ T Cell<T>::mouseState() {
 }
 
 template<typename T>
-void Cell<T>::numMinesSurrounding(std::vector<Cell<T>>& i_cells) {
+void Cell<T>::numMinesSurrounding(std::vector<std::unique_ptr<Cell>>& i_cells) {
     surroundMines = 0;
 
     if (!Mine) {
