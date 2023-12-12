@@ -1,8 +1,13 @@
 // Cell.tpp - Template Implementation for Cell class
 
+// template<typename T>
+// Cell<T>::Cell(T Ix, T Iy) : x(Ix), y(Iy), surroundMines(0), isOpen(0), stateOfTheMouse(0), Flagged(0), Mine(0) {
+//     reset();
+// }
+
 template<typename T>
-Cell<T>::Cell(T Ix, T Iy) : x(Ix), y(Iy), surroundMines(0), isOpen(0), stateOfTheMouse(0), Flagged(0), Mine(0) {
-    reset();
+Cell<T>::Cell(T Ix, T Iy) : surroundMines(0), x(Ix), y(Iy) {
+	reset();
 }
 
 template<typename T>
