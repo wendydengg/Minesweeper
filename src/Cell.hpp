@@ -1,16 +1,19 @@
 #pragma once
 
+#include <vector>
+
+template<typename T>
 class Cell {
 	bool Flagged;
-	unsigned char x;
+	T x;
 	bool Mine;
 	bool isOpen;
 
-	unsigned char surroundMines;
-	unsigned char stateOfTheMouse;
-	unsigned char y;
+	T surroundMines;
+	T stateOfTheMouse;
+	T y;
 public:
-	Cell(unsigned char Ix, unsigned char Iy);
+	Cell(T Ix, T Iy);
 
 	bool retIsOpen();
 	bool open(std::vector<Cell>& i_cells);
@@ -21,42 +24,111 @@ public:
 	void numMinesSurrounding(std::vector<Cell>& i_cells);
 	void flag();
 	
-	unsigned char retMinesSurrounding();
-	unsigned char mouseState();
+	T retMinesSurrounding();
+	T mouseState();
 
 	void reset();
 	void mineSet();
 
-	void MouseStateSet(unsigned char toSet);
+	void MouseStateSet(T toSet);
 };
 
-// #ifndef CELL_HPP
-// #define CELL_HPP
+template<typename T>
+Cell<T>::Cell(T Ix, T Iy) : x(Ix), y(Iy), surroundMines(0), Flagged(false), isOpen(false), Mine(false), stateOfTheMouse(0) {
+    reset();
+}
 
-// #include <vector>
-// #include <cstddef> 
+template<typename T>
+bool Cell<T>::retIsOpen() {
+    return isOpen;
+}
 
-// template<typename T>
-// class Cell {
-// public:
-//     Cell(T Ix, T Iy);
-//     bool retIsOpen();
-//     bool retIsFlag();
-//     bool retIsMine();
-//     bool open(std::vector<Cell<T>>& i_cells);
-//     T retMinesSurrounding();
-//     unsigned char mouseState();
-//     void numMinesSurrounding(std::vector<Cell<T>>& i_cells);
-//     void flag();
-//     void reset();
-//     void mineSet();
-//     void MouseStateSet(unsigned char toSet);
+template<typename T>
+bool Cell<T>::retIsFlag() {
+    return Flagged;
+}
 
-// private:
-//     unsigned char surroundMines, isOpen, stateOfTheMouse, Flagged, Mine;
-//     T x, y;
-// };
+template<typename T>
+bool Cell<T>::retIsMine() {
+    return Mine;
+}
 
-// #include "Cell.tpp" 
+template<typename T>
+bool Cell<T>::open(std::vector<Cell<T>>& i_cells) {
+    if (0 == isOpen) {
+        isOpen = 1;
 
-// #endif 
+        if (!Mine && surroundMines == 0) {
+            for (T a = -1; a < 2; a++) {
+                for (T b = -1; b < 2; b++) {
+                    const T neighborX = x + a;
+                    const T neighborY = y + b;
+
+                    if ((a != 0 || b != 0) && (neighborX >= 0 && neighborX < 8 && neighborY >= 0 && neighborY < 8)) {
+                        retCell(i_cells, neighborX, neighborY) -> open(i_cells);
+                    }
+                }
+            }
+        }
+        return Mine;
+    }
+    return 0;
+}
+
+template<typename T>
+T Cell<T>::retMinesSurrounding() {
+    return surroundMines;
+}
+
+template<typename T>
+T Cell<T>::mouseState() {
+    return stateOfTheMouse;
+}
+
+template<typename T>
+void Cell<T>::numMinesSurrounding(std::vector<Cell<T>>& i_cells) {
+    surroundMines = 0;
+
+    if (!Mine) {
+        for (T a = -1; a < 2; a++) {
+            for (T b = -1; b < 2; b++) {
+                T neighborX = x + a;
+                T neighborY = y + b;
+
+                if ((a != 0 || b != 0) && (neighborX >= 0 && neighborX < 8 && neighborY >= 0 && neighborY < 8)) {
+                    surroundMines += retCell(i_cells, neighborX, neighborY)->retIsMine();
+                }
+            }
+        }
+    }
+}
+
+template<typename T>
+void Cell<T>::flag() {
+    if (isOpen == 0) {
+		if (Flagged == 1) {
+			Flagged = 0;
+		} else {
+			Flagged = 1;
+		}
+	}
+}
+
+template<typename T>
+void Cell<T>::reset() {
+    isOpen = 0;
+	stateOfTheMouse = 0;
+	Flagged = 0;
+	Mine = 0;
+}
+
+template<typename T>
+void Cell<T>::mineSet() {
+    Mine = 1;
+}
+
+template<typename T>
+void Cell<T>::MouseStateSet(T toSet) {
+    stateOfTheMouse = toSet;
+}
+
