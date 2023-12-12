@@ -212,8 +212,8 @@ void GameBoard::fieldMouseState(unsigned char isMouse, unsigned char ix, unsigne
 
 void GameBoard::restart() {
 	if (0 != over) {
+        over = 0;
 		click = 0;
-		over = 0;
 		for (auto& cellPtr : cells) {
             cellPtr->reset();
 		}

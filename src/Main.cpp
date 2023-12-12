@@ -10,8 +10,8 @@ int main() {
 	 std::chrono::time_point<std::chrono::steady_clock> beforeTime;
 	 sf::Event occurance;
 
-	 sf::RenderWindow window(sf::VideoMode(16 * 8 * 5, 5 * (16 + 16 * 8)), "Minesweeper", sf::Style::Close);
-	 window.setView(sf::View(sf::FloatRect(0, 0, 16 * 8, 16 + 16 * 8)));
+	 sf::RenderWindow window(sf::VideoMode(640,720), "Minesweeper", sf::Style::Close);
+	 window.setView(sf::View(sf::FloatRect(0, 0, 128, 144)));
 
 	 GameBoard field;
 	 beforeTime = std::chrono::steady_clock::now();
@@ -24,8 +24,8 @@ int main() {
 
 		while (holdbacktime >= 16650)
 		{
-			unsigned char Cell_X_Mouse = static_cast<unsigned char>(std::max(0, std::min(static_cast<int>(floor(sf::Mouse::getPosition(window).x / static_cast<float>(16 * 5))), static_cast<int>(8 - 1))));
-            unsigned char Cell_Y_Mouse = static_cast<unsigned char>(std::max(0, std::min(static_cast<int>(floor(sf::Mouse::getPosition(window).y / static_cast<float>(16 * 5))), static_cast<int>(8 - 1))));
+			unsigned char Cell_X_Mouse = static_cast<unsigned char>(std::max(0, std::min(static_cast<int>(floor(sf::Mouse::getPosition(window).x / static_cast<float>(16 * 5))), static_cast<int>(7))));
+            unsigned char Cell_Y_Mouse = static_cast<unsigned char>(std::max(0, std::min(static_cast<int>(floor(sf::Mouse::getPosition(window).y / static_cast<float>(16 * 5))), static_cast<int>(7))));
 
 			holdbacktime  = holdbacktime - 16650;
 
@@ -49,7 +49,7 @@ int main() {
 
 			}
 
-			if (1 == sf::Mouse::isButtonPressed(sf::Mouse::Left) || 1 == sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left) == 1 || sf::Mouse::isButtonPressed(sf::Mouse::Right) == 1) {
 				field.fieldMouseState(2, Cell_X_Mouse, Cell_Y_Mouse);
 			}
 			else {
@@ -60,7 +60,7 @@ int main() {
 			if (16650 > holdbacktime) {
 				window.clear();
 				field.draw(window);
-				field.textDraw("Num Mines: " + std::to_string(14 - field.numFlags()), window, 0, 0, 16 * 8);
+				field.textDraw("Num Mines: " + std::to_string(14 - field.numFlags()), window, 0, 0, 128);
 				window.display();
 			}
 		}
